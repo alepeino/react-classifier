@@ -32,7 +32,9 @@ module.exports = {
     ]
   },
   plugins: [
-    new LodashModuleReplacementPlugin(),
+    new LodashModuleReplacementPlugin({
+      currying: true
+    }),
     new UglifyJsPlugin()
   ]
 }
