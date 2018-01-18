@@ -1,0 +1,47 @@
+{
+  "name": "react-classifier",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "author": {
+    "name": "Alejandro Peinó",
+    "email": "alepeino@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alepeino/react-classifier.git"
+  },
+  "keywords": [
+    "React"
+  ],
+  "main": "dist/index.js",
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.0.4",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-lodash": "^3.3.2",
+    "babel-preset-react-app": "^3.1.0",
+    "bill": "^3.2.6",
+    "classnames": "^2.2.5",
+    "jest": "^22.0.4",
+    "lodash": "^4.17.4",
+    "lodash-webpack-plugin": "^0.11.4",
+    "react": "^16.1.1",
+    "react-test-renderer": "^16.2.0",
+    "uglifyjs-webpack-plugin": "^1.1.6",
+    "webpack": "^3.10.0",
+    "webpack-bundle-analyzer": "^2.9.2"
+  },
+  "peerDependencies": {
+    "react": "^16.1.1"
+  },
+  "scripts": {
+    "build": "BABEL_ENV=production webpack",
+    "test": "jest"
+  },
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  }
+}
