@@ -88,7 +88,8 @@ describe('plain structure', () => {
           {
             three: true,
             four: false
-          }
+          },
+          'ok'
         ]
       })
       const tree = renderer.create(Comp).toJSON()
@@ -97,6 +98,23 @@ describe('plain structure', () => {
       expect(tree.children[0].props.className.split(' ')).toContain('two')
       expect(tree.children[0].props.className.split(' ')).toContain('three')
       expect(tree.children[0].props.className.split(' ')).not.toContain('four')
+      expect(tree.children[0].props.className.split(' ')).toContain('ok')
     })
+  })
+})
+
+describe('complex structure', () => {
+  test('root and child', () => {
+    const Comp = C(<div><p /></div>, {
+      'div': ['parent', { container: true }, {
+        'p': 'child'
+      }]
+    })
+
+    const tree = renderer.create(Comp).toJSON()
+
+    expect(tree.props.className.split(' ')).toContain('parent')
+    expect(tree.props.className.split(' ')).toContain('container')
+    expect(tree.children[0].props.className).toEqual('child')
   })
 })

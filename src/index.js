@@ -1,5 +1,11 @@
 import classNames from 'classnames'
-import { isString } from 'lodash/fp'
+import {
+  dropRight,
+  isArray,
+  isObject,
+  isString,
+  last
+} from 'lodash/fp'
 import React from 'react'
 import select from './select'
 
@@ -16,14 +22,28 @@ const unfreeze = component =>
     }
   }
 
+const apply = (component, classes) =>
+  Object.entries(classes).forEach(([selector, classes]) => {
+    let nested
+
+    if (isArray(classes) && isObject(last(classes))) {
+      nested = last(classes)
+      classes = dropRight(1, classes)
+    }
+
+    select(component, selector).forEach(element => {
+      element.props.className = classNames(element.props.className, classes)
+
+      if (nested) {
+        apply(element, nested)
+      }
+    })
+  })
+
 const classifier = (component, classes) => {
   let unfrozen = unfreeze(component)
 
-  Object.entries(classes).forEach(([selector, classes]) =>
-    select(unfrozen, selector).forEach(element =>
-      element.props.className = classNames(element.props.className, classes)
-    )
-  )
+  apply(unfrozen, classes)
 
   return unfrozen
 }
