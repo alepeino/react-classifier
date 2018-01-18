@@ -1,3 +1,4 @@
+import classNames from 'classnames'
 import { isString } from 'lodash/fp'
 import React from 'react'
 import select from './select'
@@ -20,7 +21,7 @@ const classifier = (component, classes) => {
 
   Object.entries(classes).forEach(([selector, classes]) =>
     select(unfrozen, selector).forEach(element =>
-      element.props.className = classes
+      element.props.className = classNames(element.props.className, classes)
     )
   )
 
