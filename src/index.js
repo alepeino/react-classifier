@@ -1,8 +1,6 @@
-import bill from 'bill'
 import { isString } from 'lodash/fp'
 import React from 'react'
-
-bill.registerPseudo('root', () => node => !node.parentNode)
+import select from './select'
 
 const unfreeze = component =>
   isString(component) || !Object.isFrozen(component)
@@ -21,8 +19,8 @@ const classifier = (component, classes) => {
   let unfrozen = unfreeze(component)
 
   Object.entries(classes).forEach(([selector, classes]) =>
-    bill.querySelectorAll(selector, unfrozen).forEach(node =>
-      node.element.props.className = classes
+    select(unfrozen, selector).forEach(element =>
+      element.props.className = classes
     )
   )
 

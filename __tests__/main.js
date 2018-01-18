@@ -22,6 +22,16 @@ describe('plain structure', () => {
       expect(tree.children[0].props.className).toEqual('x')
     })
 
+    test('sibling nodes by tag name', () => {
+      const Comp = C(<div><p></p><p></p></div>, {
+        'p': 'x'
+      })
+      const tree = renderer.create(Comp).toJSON()
+
+      expect(tree.children.length).toBe(2)
+      expect(tree.children.every(e => e.props.className === 'x')).toBe(true)
+    })
+
     test('root node by root pseudo selector', () => {
       const Comp = C(<div><p></p></div>, {
         ':root': 'root',
