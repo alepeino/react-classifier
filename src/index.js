@@ -1,7 +1,9 @@
 import classNames from 'classnames'
 import {
+  castArray,
   dropRight,
   isArray,
+  isFunction,
   isObject,
   isString,
   last
@@ -22,6 +24,12 @@ const unfreeze = component =>
     }
   }
 
+const classNamesForElement = (element, classes) =>
+  classNames(
+    element.props.className,
+    castArray(classes).map(c => isFunction(c) ? c(element) : c)
+  )
+
 const apply = (component, classes) =>
   Object.entries(classes).forEach(([selector, classes]) => {
     let nested
@@ -32,7 +40,7 @@ const apply = (component, classes) =>
     }
 
     select(component, selector).forEach(element => {
-      element.props.className = classNames(element.props.className, classes)
+      element.props.className = classNamesForElement(element, classes)
 
       if (nested) {
         apply(element, nested)

@@ -80,11 +80,29 @@ describe('plain structure', () => {
       expect(tree.children[0].props.className.split(' ')).toContain('two')
     })
 
+    test('function', () => {
+      const Comp = C(
+        <div>
+          <p id='p1' />
+          <p id='p2' />
+        </div>, {
+          'p': el => ({
+            ok: el.props.id === 'p2'
+          })
+        }
+      )
+
+      const tree = renderer.create(Comp).toJSON()
+
+      expect(tree.children[0].props.className).toEqual('')
+      expect(tree.children[1].props.className).toEqual('ok')
+    })
+
     test('mixed', () => {
       const Comp = C(<div><p /></div>, {
         'p': [
           ['one'],
-          'two',
+          el => el.type === 'p' && 'two',
           {
             three: true,
             four: false
