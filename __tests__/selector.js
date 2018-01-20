@@ -57,6 +57,20 @@ describe('other', () => {
     expect(matches.every(e => e.type === 'p')).toBe(true)
   })
 
+  test('supports child text nodes', () => {
+    const matches = select(
+      <div>
+        Text Node 1
+        <p />
+        Text Node 2
+        <p />
+      </div>,
+      'p')
+
+    expect(matches.length).toBe(2)
+    expect(matches.every(e => e.type === 'p')).toBe(true)
+  })
+
   test("doesn't search deeper after 1st match", () => {
     const template = (
       <div id='root'>

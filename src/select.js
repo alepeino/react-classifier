@@ -20,7 +20,7 @@ export default function select (component, selector) {
 
   if (matches(component, selector)) {
     found.push(component)
-  } else {
+  } else if (component.props) {
     React.Children.forEach(component.props.children, element =>
       select(element, selector).forEach(children =>
         React.Children.forEach(children, child => found.push(child))
