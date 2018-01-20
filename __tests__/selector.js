@@ -42,6 +42,20 @@ describe('simple selector', () => {
     expect(matches.length).toBe(1)
     expect(matches[0].type).toBe('div')
   })
+
+  test(':nth-child', () => {
+    const matches = select(
+      <div>
+        <p className='should-not' />
+        <p className='should' />
+      </div>,
+      'p:nth-child(2)'
+    )
+
+    expect(matches.length).toBe(1)
+    expect(matches.map(e => e.props.className)).not.toContain('should-not')
+    expect(matches.map(e => e.props.className)).toContain('should')
+  })
 })
 
 describe('other', () => {

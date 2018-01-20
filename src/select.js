@@ -1,6 +1,6 @@
 import React from 'react'
 
-function matches (component, selector) {
+function matches (component, selector, index) {
   if (selector === ':root') {
     return true
   }
@@ -11,18 +11,22 @@ function matches (component, selector) {
     case '#':
       return component.props.id === selector.substring(1)
     default:
-      return component.type === selector
+      const matches = selector.match(/(.+):nth-child\((\d+)\)/)
+
+      return matches
+        ? component.type === matches[1] && index === parseInt(matches[2]) - 1
+        : component.type === selector
   }
 }
 
-export default function select (component, selector) {
+export default function select (component, selector, index) {
   const found = []
 
-  if (matches(component, selector)) {
+  if (matches(component, selector, index)) {
     found.push(component)
   } else {
-    React.Children.forEach(component.props.children, element =>
-      select(element, selector).forEach(children =>
+    React.Children.forEach(component.props.children, (element, index) =>
+      select(element, selector, index).forEach(children =>
         React.Children.forEach(children, child => found.push(child))
       )
     )
