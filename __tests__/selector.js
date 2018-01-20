@@ -3,41 +3,41 @@ import select from '../src/select'
 
 describe('simple selector', () => {
   test('no matches', () => {
-    const matches = select(<div><p></p></div>, 'xx')
+    const matches = select(<div><p /></div>, 'xx')
 
     expect(matches.length).toBe(0)
   })
 
   test('select root by tag name', () => {
-    const matches = select(<div><p></p></div>, 'div')
+    const matches = select(<div><p /></div>, 'div')
 
     expect(matches.length).toBe(1)
     expect(matches[0].type).toBe('div')
   })
 
   test('select child element by tag name', () => {
-    const matches = select(<div><p></p></div>, 'p')
+    const matches = select(<div><p /></div>, 'p')
 
     expect(matches.length).toBe(1)
     expect(matches[0].type).toBe('p')
   })
 
   test('select by class', () => {
-    const matches = select(<div><p className="paragraph"></p></div>, '.paragraph')
+    const matches = select(<div><p className='paragraph' /></div>, '.paragraph')
 
     expect(matches.length).toBe(1)
     expect(matches[0].type).toBe('p')
   })
 
   test('select by id', () => {
-    const matches = select(<div id="root"><p className="paragraph"></p></div>, '#root')
+    const matches = select(<div id='root'><p className='paragraph' /></div>, '#root')
 
     expect(matches.length).toBe(1)
     expect(matches[0].type).toBe('div')
   })
 
   test(':root selector', () => {
-    const matches = select(<div><p></p></div>, ':root')
+    const matches = select(<div><p /></div>, ':root')
 
     expect(matches.length).toBe(1)
     expect(matches[0].type).toBe('div')
@@ -48,8 +48,8 @@ describe('other', () => {
   test('matches sibling nodes', () => {
     const matches = select(
       <div>
-        <p></p>
-        <p></p>
+        <p />
+        <p />
       </div>,
       'p')
 
@@ -59,13 +59,13 @@ describe('other', () => {
 
   test("doesn't search deeper after 1st match", () => {
     const template = (
-      <div id="root">
-        <p className="p">
-          <div></div>
+      <div id='root'>
+        <p className='p'>
+          <div />
         </p>
-        <p className="p">
+        <p className='p'>
           <div>
-            <p></p>
+            <p />
           </div>
         </p>
       </div>

@@ -5,7 +5,7 @@ import C from '../src'
 describe('plain structure', () => {
   describe('string classes', () => {
     test('root node by tag name', () => {
-      const Comp = C(<div><p></p></div>, {
+      const Comp = C(<div><p /></div>, {
         'div': 'x'
       })
       const tree = renderer.create(Comp).toJSON()
@@ -14,7 +14,7 @@ describe('plain structure', () => {
     })
 
     test('nested node by tag name', () => {
-      const Comp = C(<div><p></p></div>, {
+      const Comp = C(<div><p /></div>, {
         'p': 'x'
       })
       const tree = renderer.create(Comp).toJSON()
@@ -23,7 +23,7 @@ describe('plain structure', () => {
     })
 
     test('sibling nodes by tag name', () => {
-      const Comp = C(<div><p></p><p></p></div>, {
+      const Comp = C(<div><p /><p /></div>, {
         'p': 'x'
       })
       const tree = renderer.create(Comp).toJSON()
@@ -33,7 +33,7 @@ describe('plain structure', () => {
     })
 
     test('root node by root pseudo selector', () => {
-      const Comp = C(<div><p></p></div>, {
+      const Comp = C(<div><p /></div>, {
         ':root': 'root',
         'p': 'nested'
       })
@@ -45,7 +45,7 @@ describe('plain structure', () => {
 
     test('adds to existing class', () => {
       const Comp = C(<div>
-        <p className="paragraph">Text Node</p>
+        <p className='paragraph'>Text Node</p>
       </div>, {
         '.paragraph': 'x'
       })
@@ -58,7 +58,7 @@ describe('plain structure', () => {
 
   describe('complex classNames arguments', () => {
     test('object', () => {
-      const Comp = C(<div><p></p></div>, {
+      const Comp = C(<div><p /></div>, {
         'p': {
           'should': true,
           'should-not': false
@@ -71,7 +71,7 @@ describe('plain structure', () => {
     })
 
     test('array', () => {
-      const Comp = C(<div><p></p></div>, {
+      const Comp = C(<div><p /></div>, {
         'p': ['one', 'two']
       })
       const tree = renderer.create(Comp).toJSON()
@@ -81,7 +81,7 @@ describe('plain structure', () => {
     })
 
     test('mixed', () => {
-      const Comp = C(<div><p></p></div>, {
+      const Comp = C(<div><p /></div>, {
         'p': [
           ['one'],
           'two',

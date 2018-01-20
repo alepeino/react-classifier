@@ -43,5 +43,10 @@
     "presets": [
       "react-app"
     ]
+  },
+  "standard": {
+    "env": {
+      "jest": true
+    }
   }
 }
