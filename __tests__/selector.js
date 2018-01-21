@@ -71,6 +71,24 @@ describe('other', () => {
     expect(matches.every(e => e.type === 'p')).toBe(true)
   })
 
+  test('supports nested components', () => {
+    const Child = ({ children }) => <div>{children}</div>
+    const matches = select(
+      <div>
+        <Child>
+          <p>Nested component 1</p>
+        </Child>
+        <Child>
+          <p>Nested component 2</p>
+        </Child>
+      </div>,
+      'p'
+    )
+
+    expect(matches.length).toBe(2)
+    expect(matches.every(e => e.type === 'p')).toBe(true)
+  })
+
   test("doesn't search deeper after 1st match", () => {
     const template = (
       <div id='root'>
