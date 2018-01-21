@@ -42,6 +42,13 @@ describe('simple selector', () => {
     expect(matches.length).toBe(1)
     expect(matches[0].type).toBe('div')
   })
+
+  test('* selector', () => {
+    const matches = select(<div><p /></div>, '*')
+
+    expect(matches.length).toBe(1)
+    expect(matches[0].type).toBe('div')
+  })
 })
 
 describe('other', () => {

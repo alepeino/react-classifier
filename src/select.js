@@ -1,11 +1,11 @@
 import React from 'react'
 
 function matches (component, selector) {
-  if (selector === ':root') {
-    return true
-  }
-
   switch (selector[0]) {
+    case '*':
+      return selector === '*'
+    case ':':
+      return selector === ':root'
     case '.':
       return (component.props.className || '').split(' ').includes(selector.substring(1))
     case '#':
