@@ -44,6 +44,9 @@
       "react-app"
     ]
   },
+  "jest": {
+    "testMatch": ["**/tests/**/*.js?(x)"]
+  },
   "standard": {
     "env": {
       "jest": true
