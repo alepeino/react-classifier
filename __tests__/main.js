@@ -135,4 +135,38 @@ describe('complex structure', () => {
     expect(tree.props.className.split(' ')).toContain('container')
     expect(tree.children[0].props.className).toEqual('child')
   })
+
+  test('deeply nested', () => {
+    const Comp = C(
+      <div>
+        <img src='https://tailwindcss.com/img/card-top.jpg' alt='Sunset in the mountains' />
+        <div>
+          <div>The Coldest Sunset</div>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
+          </p>
+        </div>
+        <div>
+          <span className='mr-2'>#photography</span>
+          <span className='mr-2'>#travel</span>
+          <span>#winter</span>
+        </div>
+      </div>, {
+        ':root': ['max-w-sm rounded overflow-hidden shadow-lg', {
+          'img': 'w-full',
+          'div': ['px-6 py-4', {
+            'div': ['font-bold', 'text-xl', 'mb-2'],
+            'p': ['text-grey-darker', 'text-base'],
+            'span': [
+              'inline-block bg-grey-lighter rounded-full',
+              'px-3 py-1 text-sm',
+              'font-semibold text-grey-darker'
+            ]
+          }]
+        }]
+      }
+    )
+
+    expect(renderer.create(Comp).toJSON()).toMatchSnapshot()
+  })
 })

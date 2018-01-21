@@ -43,7 +43,7 @@ const apply = (component, classes) =>
       element.props.className = classNamesForElement(element, classes)
 
       if (nested) {
-        apply(element, nested)
+        React.Children.forEach(element.props.children, c => apply(c, nested))
       }
     })
   })
