@@ -15,10 +15,10 @@ function matches (component, selector) {
   }
 }
 
-export default function select (component, selector) {
+export default function select (component, selector, excludeRoot = false) {
   const found = []
 
-  if (matches(component, selector)) {
+  if (!excludeRoot && matches(component, selector)) {
     found.push(component)
   } else if (component.props) {
     React.Children.forEach(component.props.children, element =>

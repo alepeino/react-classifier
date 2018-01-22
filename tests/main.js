@@ -83,12 +83,15 @@ describe('plain structure', () => {
     test('function', () => {
       const Comp = C(
         <div>
-          <p id='p1' />
-          <p id='p2' />
+          <div />
+          <div />
         </div>, {
-          'p': el => ({
-            ok: el.props.id === 'p2'
-          })
+          'div': [{
+            'div': (_, nth, selected) => {
+              expect(selected).toHaveLength(2)
+              return { ok: nth === 1 }
+            }
+          }]
         }
       )
 
@@ -147,8 +150,8 @@ describe('complex structure', () => {
           </p>
         </div>
         <div>
-          <span className='mr-2'>#photography</span>
-          <span className='mr-2'>#travel</span>
+          <span>#photography</span>
+          <span>#travel</span>
           <span>#winter</span>
         </div>
       </div>, {
@@ -160,7 +163,10 @@ describe('complex structure', () => {
             'span': [
               'inline-block bg-grey-lighter rounded-full',
               'px-3 py-1 text-sm',
-              'font-semibold text-grey-darker'
+              'font-semibold text-grey-darker',
+              (_, n, selected) => ({
+                'mr-2': n < selected.length - 1
+              })
             ]
           }]
         }]

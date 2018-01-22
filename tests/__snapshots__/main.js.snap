@@ -27,12 +27,12 @@ exports[`complex structure deeply nested 1`] = `
     className="px-6 py-4"
   >
     <span
-      className="mr-2 inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker"
+      className="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2"
     >
       #photography
     </span>
     <span
-      className="mr-2 inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker"
+      className="inline-block bg-grey-lighter rounded-full px-3 py-1 text-sm font-semibold text-grey-darker mr-2"
     >
       #travel
     </span>

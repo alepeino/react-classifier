@@ -4,7 +4,7 @@ import {
   dropRight,
   isArray,
   isFunction,
-  isObject,
+  isPlainObject,
   isString,
   last
 } from 'lodash/fp'
@@ -24,26 +24,26 @@ const unfreeze = component =>
     }
   }
 
-const classNamesForElement = (element, classes) =>
-  classNames(
-    element.props.className,
-    castArray(classes).map(c => isFunction(c) ? c(element) : c)
-  )
-
-const apply = (component, classes) =>
+const apply = (component, classes, excludeRoot = false) =>
   Object.entries(classes).forEach(([selector, classes]) => {
     let nested
 
-    if (isArray(classes) && isObject(last(classes))) {
+    if (isArray(classes) && isPlainObject(last(classes))) {
       nested = last(classes)
       classes = dropRight(1, classes)
     }
 
-    select(component, selector).forEach(element => {
-      element.props.className = classNamesForElement(element, classes)
+    select(component, selector, excludeRoot).forEach((element, n, selected) => {
+      element.props.className = classNames(
+        element.props.className,
+        castArray(classes).map(cls => isFunction(cls)
+          ? cls(element, n, selected)
+          : cls
+        )
+      )
 
       if (nested) {
-        React.Children.forEach(element.props.children, c => apply(c, nested))
+        apply(element, nested, true)
       }
     })
   })

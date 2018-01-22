@@ -121,4 +121,18 @@ describe('other', () => {
       expect(matches.every(e => e.props.className === 'p')).toBe(true)
     }
   })
+
+  test('can exclude root element', () => {
+    const matches = select(
+      <div id='root'>
+        <div />
+        <div />
+      </div>,
+      'div',
+      true
+    )
+
+    expect(matches).toHaveLength(2)
+    expect(matches.some(e => e.props.id === 'root')).toBe(false)
+  })
 })
