@@ -28,7 +28,7 @@ describe('plain structure', () => {
       })
       const tree = renderer.create(Comp).toJSON()
 
-      expect(tree.children.length).toBe(2)
+      expect(tree.children).toHaveLength(2)
       expect(tree.children.every(e => e.props.className === 'x')).toBe(true)
     })
 
