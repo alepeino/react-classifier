@@ -48,7 +48,7 @@ const apply = (component, classes, excludeRoot = false) =>
     })
   })
 
-const classifier = (component, classes) => {
+const classifier = (component, classes = {}) => {
   let unfrozen = unfreeze(component)
 
   apply(unfrozen, classes)
