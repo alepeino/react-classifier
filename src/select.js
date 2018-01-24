@@ -1,4 +1,5 @@
 import React from 'react'
+import { isFunction } from 'lodash/fp'
 
 function matches (component, selector) {
   switch (selector[0]) {
@@ -11,7 +12,9 @@ function matches (component, selector) {
     case '#':
       return component.props.id === selector.substring(1)
     default:
-      return component.type === selector
+      return isFunction(component.type)
+        ? component.type.name === selector
+        : component.type === selector
   }
 }
 

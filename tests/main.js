@@ -139,6 +139,28 @@ describe('complex structure', () => {
     expect(tree.children[0].props.className).toEqual('child')
   })
 
+  test('can select component children', () => {
+    const Parent = ({ className, children }) => <div className={className}>{children}</div>
+    const Comp = C(
+      <div>
+        <Parent>
+          <div />
+          <div />
+        </Parent>
+      </div>, {
+        'Parent': ['parent', {
+          'div': 'child'
+        }]
+      }
+    )
+
+    const tree = renderer.create(Comp).toJSON()
+
+    expect(tree.props.className).toBeUndefined()
+    expect(tree.children[0].props.className).toEqual('parent')
+    expect(tree.children[0].children.every(c => c.props.className === 'child')).toBe(true)
+  })
+
   test('deeply nested', () => {
     const Comp = C(
       <div>

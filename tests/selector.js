@@ -96,6 +96,19 @@ describe('other', () => {
     expect(matches.every(e => e.type === 'p')).toBe(true)
   })
 
+  test('can select React components', () => {
+    const Child = () => <div></div>
+    const template = (
+      <div>
+        <Child />
+        <Child />
+      </div>
+    )
+
+    expect(select(template, 'div')).toHaveLength(1)
+    expect(select(template, 'Child')).toHaveLength(2)
+  })
+
   test("doesn't search deeper after 1st match", () => {
     const template = (
       <div id='root'>
