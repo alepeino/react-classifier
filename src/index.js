@@ -3,57 +3,65 @@ import {
   castArray,
   dropRight,
   isArray,
+  isEmpty,
   isFunction,
   isPlainObject,
-  isString,
   last
 } from 'lodash/fp'
 import React from 'react'
-import select from './select'
 
-const unfreeze = component =>
-  isString(component) || !Object.isFrozen(component)
-  ? component
-  : {
-    ...component,
-    props: {
-      ...component.props,
-      children: React.Children
-        .toArray(component.props.children)
-        .reduce((children, node) => children.concat(unfreeze(node)), [])
-    }
+function matches (component, selector) {
+  switch (selector[0]) {
+    case '*':
+      return selector === '*'
+    case ':':
+      return selector === ':root'
+    case '.':
+      return (component.props.className || '').split(' ').includes(selector.substring(1))
+    case '#':
+      return component.props.id === selector.substring(1)
+    default:
+      return isFunction(component.type)
+        ? component.type.name === selector
+        : component.type === selector
   }
-
-const apply = (component, classes, excludeRoot = false) =>
-  Object.entries(classes).forEach(([selector, classes]) => {
-    let nested
-
-    if (isArray(classes) && isPlainObject(last(classes))) {
-      nested = last(classes)
-      classes = dropRight(1, classes)
-    }
-
-    select(component, selector, excludeRoot).forEach((element, n, selected) => {
-      element.props.className = classNames(
-        element.props.className,
-        castArray(classes).map(cls => isFunction(cls)
-          ? cls(element, n, selected)
-          : cls
-        )
-      )
-
-      if (nested) {
-        apply(element, nested, true)
-      }
-    })
-  })
-
-const classifier = (component, classes = {}) => {
-  let unfrozen = unfreeze(component)
-
-  apply(unfrozen, classes)
-
-  return unfrozen
 }
 
-export default classifier
+function apply (element, classes = {}, nthChild = 0, siblings = []) {
+  if (isEmpty(classes)) {
+    return element
+  }
+
+  let { children, className } = element.props
+  let nested = {}
+
+  const topLevel = Object.entries(classes)
+    .filter(([selector]) => matches(element, selector))
+    .map(([, cls]) => {
+      if (isArray(cls) && isPlainObject(last(cls))) {
+        nested = { ...nested, ...last(cls) }
+        cls = dropRight(1, cls)
+      }
+
+      return castArray(cls).map(c => isFunction(c)
+        ? c(element, nthChild, siblings)
+        : c
+      )
+    })
+
+  if (isEmpty(topLevel)) {
+    nested = classes
+  } else {
+    className = classNames(className, ...topLevel)
+  }
+
+  return React.cloneElement(
+    element,
+    className ? { className } : {},
+    React.Children.map(children, (c, n) => apply(c, nested, n, children))
+  )
+}
+
+export default function classifier (component, classes = {}) {
+  return apply(component, classes, 0, [component])
+}

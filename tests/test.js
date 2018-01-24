@@ -34,13 +34,11 @@ describe('plain structure', () => {
 
     test('root node by root pseudo selector', () => {
       const Comp = C(<div><p /></div>, {
-        ':root': 'root',
-        'p': 'nested'
+        ':root': 'root'
       })
       const tree = renderer.create(Comp).toJSON()
 
       expect(tree.props.className).toEqual('root')
-      expect(tree.children[0].props.className).toEqual('nested')
     })
 
     test('adds to existing class', () => {
@@ -82,7 +80,7 @@ describe('plain structure', () => {
 
     test('function', () => {
       const Comp = C(
-        <div>
+        <div id='x2'>
           <div />
           <div />
         </div>, {
@@ -97,7 +95,7 @@ describe('plain structure', () => {
 
       const tree = renderer.create(Comp).toJSON()
 
-      expect(tree.children[0].props.className).toEqual('')
+      expect(tree.children[0].props.className).toBeUndefined()
       expect(tree.children[1].props.className).toEqual('ok')
     })
 
