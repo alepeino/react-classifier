@@ -28,7 +28,7 @@ function matches (component, selector) {
 }
 
 function apply (element, classes = {}, nthChild = 0, siblings = []) {
-  if (isEmpty(classes)) {
+  if (!isPlainObject(element) || isEmpty(classes)) {
     return element
   }
 
