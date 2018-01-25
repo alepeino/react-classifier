@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import C from '../src'
+import C, { firstChild, lastChild, nthChild } from '../src'
 
 describe('plain structure', () => {
   describe('string classes', () => {
@@ -80,7 +80,7 @@ describe('plain structure', () => {
 
     test('function', () => {
       const Comp = C(
-        <div id='x2'>
+        <div>
           <div />
           <div />
         </div>, {
@@ -184,9 +184,8 @@ describe('complex structure', () => {
               'inline-block bg-grey-lighter rounded-full',
               'px-3 py-1 text-sm',
               'font-semibold text-grey-darker',
-              (_, n, selected) => ({
-                'mr-2': n < selected.length - 1
-              })
+              firstChild('mr-2'),
+              nthChild(2, 'mr-2')
             ]
           }]
         }]
@@ -194,5 +193,57 @@ describe('complex structure', () => {
     )
 
     expect(renderer.create(Comp).toJSON()).toMatchSnapshot()
+  })
+})
+
+describe('nth-child helpers', () => {
+  const jsx = (
+    <div>
+      <p />
+      <p />
+      <p />
+    </div>
+  )
+
+  test('nthChild', () => {
+    const Comp = C(jsx, {
+      'div': [{
+        'p': nthChild(2, 'second', 'child')
+      }]
+    })
+
+    const tree = renderer.create(Comp).toJSON()
+
+    expect(tree.children[0].props.className).toBeUndefined()
+    expect(tree.children[1].props.className).toEqual('second child')
+    expect(tree.children[2].props.className).toBeUndefined()
+  })
+
+  test('firstChild', () => {
+    const Comp = C(jsx, {
+      'div': [{
+        'p': firstChild(['first', 'child'])
+      }]
+    })
+
+    const tree = renderer.create(Comp).toJSON()
+
+    expect(tree.children[0].props.className).toEqual('first child')
+    expect(tree.children[1].props.className).toBeUndefined()
+    expect(tree.children[2].props.className).toBeUndefined()
+  })
+
+  test('lastChild', () => {
+    const Comp = C(jsx, {
+      'div': [{
+        'p': lastChild({ last: true }, 'child')
+      }]
+    })
+
+    const tree = renderer.create(Comp).toJSON()
+
+    expect(tree.children[0].props.className).toBeUndefined()
+    expect(tree.children[1].props.className).toBeUndefined()
+    expect(tree.children[2].props.className).toEqual('last child')
   })
 })

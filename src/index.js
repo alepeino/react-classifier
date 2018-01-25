@@ -58,10 +58,19 @@ function apply (element, classes = {}, nthChild = 0, siblings = []) {
   return React.cloneElement(
     element,
     className ? { className } : {},
-    React.Children.map(children, (c, n) => apply(c, nested, n, children))
+    React.Children.map(children, (c, n) => apply(c, nested, n, React.Children.toArray(children)))
   )
 }
 
 export default function classifier (component, classes = {}) {
   return apply(component, classes, 0, [component])
 }
+
+export const nthChild = (n, ...classes) =>
+  (_, index) => n === index + 1 && classes
+
+export const firstChild = (...classes) =>
+  nthChild(1, ...classes)
+
+export const lastChild = (...classes) =>
+  (e, index, siblings) => nthChild(siblings.length, ...classes)(e, index)
