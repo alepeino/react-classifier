@@ -272,6 +272,53 @@ renders
 </div>
 ```
 
+### Component decoration
+The `decorate` named export takes a component and another argument which will be passed to the [`:root`](#root-selector) of the wrapped component, returning a higher-order component.
+
+```jsx
+const Button = (props) => (
+  <button className='btn'>
+    {props.children}
+  </button>
+)
+const RedButton = decorate(Button, 'bg-red')
+<RedButton>A red button</RedButton>)
+```
+
+renders
+```jsx
+<button className="btn bg-red">A red button</button>
+```
+
+[Any structure](#class-arguments) can be passed to the `decorate` helper function, which allows adding classes to child elements:
+
+```jsx
+const List = ({ items }) => (
+  <ul>
+    {items.map((item, i) =>
+      <li key={i}>{item}</li>
+    )}
+  </ul>
+)
+const StripedList = decorate(List, [{
+  li: [
+    'text-dark',
+    (_, i) => i % 2 && 'bg-light-grey'
+  ]
+}])
+<StripedList items={['a', 'b', 'c', 'd']} />
+```
+
+renders
+```jsx
+<ul>
+  <li className="text-dark">a</li>
+  <li className="text-dark bg-light-grey">b</li>
+  <li className="text-dark">c</li>
+  <li className="text-dark bg-light-grey">d</li>
+</ul>
+```
+
 ## A word of caution
 This should not (yet) be considered ready for production use. There may still exist bugs or performance issues. **PRs and comments are welcome**.
 

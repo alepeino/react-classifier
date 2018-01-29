@@ -74,3 +74,8 @@ export const firstChild = (...classes) =>
 
 export const lastChild = (...classes) =>
   (e, index, siblings) => nthChild(siblings.length, ...classes)(e, index)
+
+export const decorate = (Component, classes) => (props) => {
+  const Wrapped = Component(props)
+  return classifier(<Wrapped.type {...Wrapped.props} />, {':root': classes})
+}

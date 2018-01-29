@@ -1,6 +1,6 @@
 import React from 'react'
 import renderer from 'react-test-renderer'
-import C, { firstChild, lastChild, nthChild } from '../src'
+import C, { decorate, firstChild, lastChild, nthChild } from '../src'
 
 describe('plain structure', () => {
   describe('string classes', () => {
@@ -245,5 +245,29 @@ describe('nth-child helpers', () => {
     expect(tree.children[0].props.className).toBeUndefined()
     expect(tree.children[1].props.className).toBeUndefined()
     expect(tree.children[2].props.className).toEqual('last child')
+  })
+})
+
+describe('HOCs', () => {
+  test('applies class to root element', () => {
+    const Button = (props) => <button className='btn'>{props.children}</button>
+    const RedButton = decorate(Button, 'bg-red')
+
+    const tree = renderer.create(<RedButton>A red button</RedButton>).toJSON()
+
+    expect(tree.props.className).toEqual('btn bg-red')
+    expect(tree.children[0]).toEqual('A red button')
+  })
+
+  test('props are passed to wrapped component', () => {
+    const List = ({ items }) => <ul>{items.map((item, i) => <li key={i}>{item}</li>)}</ul>
+    const StripedList = decorate(List, [{ li: (_, i) => i % 2 && 'bg-light-grey' }])
+
+    const tree = renderer.create(<StripedList items={['a', 'b', 'c', 'd']} />).toJSON()
+
+    expect(tree.children[0].props.className).toBeUndefined()
+    expect(tree.children[1].props.className).toEqual('bg-light-grey')
+    expect(tree.children[2].props.className).toBeUndefined()
+    expect(tree.children[3].props.className).toEqual('bg-light-grey')
   })
 })
