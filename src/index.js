@@ -32,7 +32,7 @@ function apply (element, classes = {}, nthChild = 0, siblings = []) {
     return element
   }
 
-  let { children, className } = element.props
+  let { children = [], className } = element.props
   let nested = {}
 
   const topLevel = Object.entries(classes)
@@ -58,7 +58,7 @@ function apply (element, classes = {}, nthChild = 0, siblings = []) {
   return React.cloneElement(
     element,
     className ? { className } : {},
-    React.Children.map(children, (c, n) => apply(c, nested, n, React.Children.toArray(children)))
+    ...React.Children.map(children, (c, n) => apply(c, nested, n, React.Children.toArray(children)))
   )
 }
 
