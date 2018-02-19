@@ -22,9 +22,9 @@ const Card = ({ title, imgSrc, texts }) => (
 into this
 
 ```jsx
-import C from 'react-classifier'
+import C, { lastChild } from 'react-classifier'
 
-const Nav = ({ title, imgSrc, texts }) => C(
+const Card = ({ title, imgSrc, texts }) => C(
   <div>
     <img src={imgSrc} alt="Card image" />
     <div>
@@ -51,7 +51,7 @@ const Nav = ({ title, imgSrc, texts }) => C(
 ###### (Example card component from http://getbootstrap.com/docs/4.0/components/card/#image-caps)
 
 
-That's it! It simply allows you to "separate concerns" (visually, at least), uncluttering your component markup by keeping the classes in a separate structure, while also providing a few convenient [helpers](#helpers).
+That's it! It simply allows you to "separate concerns" (visually, at least), uncluttering your component markup by keeping the classes in a separate structure, while also providing a few convenient [helpers](#helper-functions).
 
 ## Motivation
 There exist solutions like [CSS Modules](https://github.com/css-modules/css-modules), [styled-components](https://www.styled-components.com/), [glamor](https://github.com/threepointone/glamor), or [styled-jsx](https://github.com/zeit/styled-jsx), with alternatives for styling a React component (some of these libraries are not React-specific, though) while keeping the CSS rules scoped.
@@ -127,7 +127,7 @@ renders as
 ```jsx
 const Component = () => C(
   <div className="a" />, {
-    '.a': { b: true, c: 'truthy', d: 2 < 1 }
+    '.a': { b: true, c: 'truthy', d: 0 === 1 }
   }
 )
 ```
