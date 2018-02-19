@@ -1,6 +1,6 @@
 {
   "name": "react-classifier",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Add classes to a tree of React elements with a tree of CSS-like selectors",
   "license": "MIT",
   "author": {
